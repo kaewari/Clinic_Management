@@ -1,0 +1,95 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<br>
+<h1 class="text-center text-danger">ĐĂNG KÝ NGƯỜI DÙNG</h1>
+{% if error_msg %}
+<div class="alert text-center alert-danger container">
+    {{ error_msg }}
+</div>
+{% endif %}
+<form class="container" method="post" action="{{ url_for('register') }}" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name"><b>Họ tên</b></label>
+        <input type="text" name="name" class="form-control"
+               id="name" placeholder="Vui lòng nhập đầy đủ họ và tên..." required />
+    </div>
+    <div class="form-group">
+        <label for="username"><b>Username</b></label>
+        <input type="text" name="username" class="form-control"
+               id="username" placeholder="Nhap username..." required />
+    </div>
+    <div class="form-group">
+        <label for="email"><b>Email</b></label>
+        <input type="email" name="email" class="form-control"
+               id="email" placeholder="Nhap email..." />
+    </div>
+    <div class="form-group">
+        <label for="password"><b>Mật khẩu</b></label>
+        <input type="password"
+               name="password"
+               class="form-control"
+               id="password"
+               placeholder="Nhap mat khau..." required />
+    </div>
+    <div class="form-group">
+        <label for="confirm"><b>Xác nhận mật khẩu</b></label>
+        <input type="password"
+               name="confirm"
+               class="form-control"
+               id="confirm"
+               placeholder="Nhap xac nhan mat khau..." required />
+    </div>
+    <div class="form-group">
+        <label for="date_of_birth"><b>Năm sinh</b></label>
+        <input class="form-control" type="date" name="date_of_birth" id="date_of_birth">
+    </div>
+    <div class="form-group">
+        <label for="gender"><b>Giới tính</b></label>
+        <div id="gender">
+            <input type="radio" name="gender" value="Male" checked> Male<br>
+            <input type="radio" name="gender" value="Female"> Female<br>
+            <input type="radio" name="gender" value="Others"> Others<br>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="city"><b>Tỉnh/Thành</b></label>
+        <select id="city" name="city">
+            {% set count = namespace(value=1) %}
+            {% for c in city %}
+            <option value="{{count.value}}">{{ c.name }}</option>
+            {% set count.value = count.value + 1 %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="district"><b>Quận/Huyện</b></label>
+        <select id="district" name="district">
+            {% set count = namespace(value=1) %}
+            {% for c in district %}
+            <option value="{{count.value}}">{{ c.name }}</option>
+            {% set count.value = count.value + 1 %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="ward"><b>Phường/Xã</b></label>
+        <select id="ward" name="ward">
+            {% set count = namespace(value=1) %}
+            {% for c in ward %}
+            <option value="{{count.value}}">{{ c.name }}</option>
+            {% set count.value = count.value + 1 %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="avatar"><b>Ảnh đại diện</b></label>
+        <input type="file"
+               name="avatar"
+               class="form-control"
+               id="avatar" />
+    </div>
+    <input type="submit" value="Submit" class="btn btn-success" />
+</form>
+<br>
+{% endblock %}

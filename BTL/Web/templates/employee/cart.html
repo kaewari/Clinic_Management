@@ -1,0 +1,69 @@
+{% extends 'employee/pay.html' %}
+
+{% if current_user.is_authenticated %}
+        {% block content %}
+        <div class="container">
+            <h1 class="text-center text-danger">THANH TOÁN</h1>
+            {% if 'cart' in session and session['cart'] %}
+            {% if err_msg %}
+            <div class="alert text-center alert-danger container">
+                {{ err_msg }}
+            </div>
+            {% endif %}
+            <form method="post" action="{{ url_for('pay') }}">
+                <div class="row">
+                     <div class="col-md-2">
+                        <label for="guest_id">Mã bệnh nhân<sup>*</sup></label>
+                        <input type="text" id="guest_id" name="guest_id" class="form-control" placeholder="Nhập mã bệnh nhân"/>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="toathuoc_id">Mã toa thuốc<sup>*</sup></label>
+
+                        <input type="text" id="toathuoc_id" name="toathuoc_id" class="form-control" placeholder="Nhập mã toa thuốc"/>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="medical_expense">Nhập số tiền khám<sup>*</sup></label>
+
+                        <input type="text" id="medical_expense" name="medical_expense" class="form-control" placeholder="Nhập số tiền khám"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><label for="medicine_id">Mã thuốc</label></div>
+                    <div class="col-md-3"><label for="name">Tên thuốc</label></div>
+                    <div class="col-md-3"><label for="quantity">Số lượng</label></div>
+                    <div class="col-md-3"><label for="unit_price">Đơn giá</label></div>
+                </div>
+                {% for c in session['cart'].values() %}
+                <div class="row" id="medicine{{ c.id }}">
+                    <div class="form-group col-md-2">
+                        <input type="number" id="medicine_id" name="medicine_id" value="{{ c.id }}" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" id="name" name="name" value="{{ c.name }}" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="number" id="quantity" name="quantity" value="{{ c.quantity }}" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="number" id="unit_price" name="unit_price" value="{{ c.price }}" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <input type="button" id="delete" name="delete" value="Xóa" class="btn btn-danger" onclick="delete_cart({{ c.id }})"/>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="alert alert-info">
+                    <h5>Tong san pham: {{ cart_stats.total_quantity }}</h5>
+                    <h5>Tong tien: {{ "{:,.1f}".format(cart_stats.total_amount) }} VND</h5>
+                </div>
+                {% if current_user.is_authenticated %}
+                <input type="submit" class="btn btn-danger" value="Thanh toán">
+                {% endif %}
+                <br><br>
+                {% else %}
+                <p><i>Khong co san pham nao trong gio!!!</i></p>
+                {% endif %}
+            </form>
+        </div>
+        {% endblock %}
+{% endif %}

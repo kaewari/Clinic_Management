@@ -1,0 +1,54 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h1 class="text-center text-danger">TRANG TÍNH TOÁN ĐƠN GIẢN</h1>
+<div class="col-xs-12">
+    <form>
+        <div class="form-group">
+            <input type="text" class="form-control" id="value1" placeholder="Nhap so thu 1" />
+        </div>
+        <select id="operator2">
+            <option>+</option>
+            <option>-</option>
+            <option>*</option>
+            <option>/</option>
+        </select>
+        <br><br>
+        <div class="form-group">
+            <input type="text" class="form-control" id="value2" placeholder="Nhap so thu 2" />
+        </div>
+        <div>
+            <input type="text" class="form-control" id="result2" placeholder="Ket qua" />
+        </div>
+        <br>
+        <input onclick="Calculate()" type="submit" value="Submit" class="btn btn-success" />
+        <input onclick="" type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+</div>
+<script type="text/javascript">
+    function Calculate(){
+    event.preventDefault()
+    var n1 = document.getElementById('value1').value;
+    var n2 = document.getElementById('value2').value;
+    var operator = document.getElementById('operator2').value;
+    var result = 0;
+    if(operator == "+"){
+         result = parseInt(n1) + parseInt(n2);
+    }else if(operator == "-"){
+         result = parseInt(n1) - parseInt(n2);
+    }else if(operator == "*"){
+         result = parseInt(n1) * parseInt(n2);
+    }else if(operator == "/"){
+         if(n2 == 0)
+            alert("Can not div 0")
+         else
+            result = parseInt(n1) / parseInt(n2);
+    }
+    if(n1 == "" || n2 == "")
+    {
+        alert("Empty value")
+    }
+    document.getElementById('result2').value = result;
+}
+</script>
+{% endblock %}

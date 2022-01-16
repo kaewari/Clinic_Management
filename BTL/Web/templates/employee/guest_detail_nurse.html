@@ -1,0 +1,32 @@
+{% extends 'employee/list.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center text-danger">Thông tin chi tiết của bệnh nhân</h1>
+
+    {% if guest %}
+    <br>
+    <div class="row">
+        <div class="col-md-3 table table-bordered">
+            <p class="text-center"><b>Ảnh đại diện</b></p>
+            <img src="{{ guest.avatar }}" style="width: 200px; height: 200px">
+        </div>
+        <table class="table table-striped table-bordered col-md-9" id="guest_detail">
+            <tr>
+                <th>Mã bệnh nhân</th>
+                <th>Tên bệnh nhân</th>
+                <th>Username</th>
+                <th>Giới tính</th>
+                <th>Email</th>
+            </tr>
+            <tr>
+                <td>{{ guest.id }}</td>
+                <td>{{ guest.name }}</td>
+                <td>{{ guest.username }}</td>
+                <td>{{ guest.gender }}</td>
+                <td>{{ guest.email }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

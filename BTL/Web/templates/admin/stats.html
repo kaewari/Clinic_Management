@@ -1,0 +1,208 @@
+{% extends 'admin/base.html' %}
+
+{% if current_user.user_role.__eq__('ADMIN') %}
+{% block body %}
+<h1 class="text-center text-danger">THỐNG KÊ THUỐC</h1>
+<div class="col-xs-12">
+    <form action="/admin/statsview/">
+        <div class="form-group">
+            <input type="text" class="form-control" name="kw" placeholder="Nhap tu khoa..." />
+        </div>
+        <div class="form-group">
+            <input type="date" class="form-control" name="from_date" />
+        </div>
+        <div class="form-group">
+            <input type="date" class="form-control" name="to_date" />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="day" placeholder="Nhap ngay..." />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="month" placeholder="Nhap thang..." />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="year" placeholder="Nhap nam..." />
+        </div>
+        <input type="submit" value="Thong ke" class="btn btn-success" />
+    </form>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <table class="table">
+            <tr>
+                <th>Ngay</th>
+                <th>Thang</th>
+                <th>Nam</th>
+                <th>Ma san pham</th>
+                <th>Ten san pham</th>
+                <th>So lan ban</th>
+                <th>Da ban</th>
+            </tr>
+            {% for s in medicine_stats %}
+            <tr>
+                <td>{{ s[5] }}</td>
+                <td>{{ s[6] }}</td>
+                <td>{{ s[7] }}</td>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[3] }}</td>
+                <td>{{ s[4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <canvas id="myMedicineChart"></canvas>
+    </div>
+</div>
+
+<h1 class="text-danger text-center">THỐNG KÊ DOANH THU THEO THÁNG</h1>
+
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <table class="table">
+            <tr>
+                <th>Ngay</th>
+                <th>Thang</th>
+                <th>Nam</th>
+                <th>Doanh thu</th>
+                <th>So benh nhan</th>
+                <th>Ty le</th>
+            </tr>
+            {% for s in month_stats %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[2] }}</td>
+                <td>
+                    {% if s[3] %}
+                    {{ "{:,.1f}".format(s[3]) }} VND
+                    {% else %}
+                    0 VND
+                    {% endif %}
+                </td>
+                <td>{{ s[4] }} nguoi</td>
+                <td>{{ s[5] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <canvas id="myMonthChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    let labels = [], labels2 = []
+    let data = [], data2 = []
+    let colors = [], colors2 = []
+    let borderColors = [], borderColors2 = []
+    let r, g, b;
+
+    {% for s in medicine_stats %}
+        {% if s[4] %}
+            labels.push('{{ s[1] }}')
+            data.push({{ s[4] }})
+
+            r = Math.random()*255
+            g = Math.random()*255
+            b = Math.random()*255
+
+            colors.push(`rgba(${r}, ${g}, ${b}, 0.5)`)
+            borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`)
+        {% endif %}
+    {% endfor %}
+
+    {% for s in month_stats %}
+        {% if s[3] %}
+            labels2.push({{s[0]}}+"/"+{{ s[1] }}+"/"+{{ s[2] }})
+            data2.push({{ s[3] }})
+
+            r = Math.random()*255
+            g = Math.random()*255
+            b = Math.random()*255
+
+            colors2.push(`rgba(${r}, ${g}, ${b}, 0.5)`)
+            borderColors2.push(`rgba(${r}, ${g}, ${b}, 1)`)
+        {% endif %}
+    {% endfor %}
+
+    window.onload = function() {
+        const ctx = document.getElementById('myMedicineChart').getContext('2d');
+        displayBarChart(ctx, 'bar', labels, data, colors, borderColors)
+
+        const ctx2 = document.getElementById('myMonthChart').getContext('2d');
+        displayLineChart(ctx2, 'line', labels2, data2, colors2, borderColors2)
+    }
+
+    function displayLineChart(ctx, typeChart, labels, data, colors, borderColors) {
+        const myChart = new Chart(ctx, {
+            type: typeChart,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Thong ke doanh thu',
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: borderColors,
+                    borderWidth: 3,
+                }]
+            },
+            options: {
+                animations:
+                {
+                      tension:
+                      {
+                        duration: 1000,
+                        easing: 'easeInOutBack',
+                        from: 1,
+                        to: 0,
+                        loop: true
+                      },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+            tooltips:{
+              enabled:true
+            }
+        });
+    }
+    function displayBarChart(ctx, typeChart, labels, data, colors, borderColors) {
+        const myChart = new Chart(ctx, {
+            type: typeChart,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Thong ke thuoc',
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: borderColors,
+                    borderWidth: 2,
+                    borderRadius: 10,
+                    hoverBorderColor: borderColors,
+                    hoverBorderWidth: 5,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+            tooltips:{
+              enabled:true
+            }
+        });
+    }
+</script>
+{% endblock %}
+{% endif %}

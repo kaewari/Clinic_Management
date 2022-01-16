@@ -1,0 +1,112 @@
+{% if current_user.is_authenticated %}
+    {% if current_user.user_role.__eq__('EMPLOYEE') %}
+{% extends 'employee/index.html' %}
+{% block header %}
+<div class="container">
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark prescription sticky-top">
+  <!-- Brand -->
+      <a class="navbar-brand" href="/"><i class="fas fa-hospital-alt"> SONHOANG</i></a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+    {% if current_user.user_role.__eq__('ADMIN') %}
+     <div class="collapse navbar-collapse" id="collapsibleNavbar">
+         <div>
+             <ul class="navbar-nav">
+            <li class="nav-item text-right">
+                <a class="nav-link text-danger" href="{{ url_for('employee_account') }}">
+                    {% if current_user.avatar %}
+                    <img src="{{ current_user.avatar }}" class="rounded-circle" width="30" height="30" alt="{{ current_user.username }}" />
+                    {% else %}
+                    <img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641660925/akew2xsulpu7xryxjhdl.jpg" class="rounded-circle" width="30" alt="{{ current_user.username }}" />
+                    {% endif %}
+                    {{ current_user.username }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('Add_receipt')}}">Trang chủ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('medical_form_detail')}}">Thông tin phiếu khám</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-success" href="{{ url_for('create_cart') }}">
+                  Lập hóa đơn <span class="badge badge-info form-info" id="cartCounter">{{ cart_stats.total_quantity }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('receipt')}}">Xuất hóa đơn</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('employee')}}">Quay về trang nhân viên</a>
+            </li>
+        </ul>
+         </div>
+         <button class="search" id="search"><i class="fas fa-search" onclick="ShowFormChangeAvatar()"></i></button>
+         <div class="fix" id="search1" style="top: 7%">
+            <form class="form-inline fix1" style="top: 9%" >
+                <input class="form-control" type="text" name="kw" placeholder="Nhap tu khoa...">
+                <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+     </div>
+    {% endif %}
+</nav>
+</div>
+{% endblock %}
+    {% endif %}
+{% endif %}
+{% block content %}
+{% if current_user.is_authenticated %}
+    {% if current_user.user_role.__eq__('EMPLOYEE') %}
+        <h1 class="text-center text-danger">CHỌN THUỐC</h1>
+        <div class="container">
+            <div class="row">
+                <div class="category dropright col-md-3">
+                    <a class="dropdown-toggle category" data-toggle="dropdown" href="#">Danh mục thuốc<span class="caret"></span></a>
+                    <ul class="dropdown-menu category">
+                        {% for c in categories %}
+                        <li class="{% if 'category_id' in request.args and c.id.__eq__(request.args.category_id|int) %}activeCategory{% endif %} ">
+                            <a class="dropdown-item category" href="{{ url_for('Add_receipt', category_id=c.id) }}">{{ c.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <br>
+            </div>
+            {% if medicine %}
+            <div class="row">
+                {% for m in medicine %}
+                <div class="col-md-3 col-xs-12 medicine">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ url_for('static', filename=m.image) }}" alt="{{ m.name }}">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ m.name }}</h4>
+                            <p class="card-text">{{ "{:,.1f}".format(m.price) }} VND</p>
+                            <a href="#" class="btn btn-primary" onclick="addToCart({{ m.id }}, '{{ m.name }}', {{ m.price }})">Chọn</a>
+                            <a href="{{ url_for('medicine_detail', medicine_id=m.id) }}" class="btn btn-danger">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p><i>Không có thuốc</i></p>
+            {% endif %}
+        </div>
+    {% else %}
+        <meta content="0;url={{ url_for('Web_Not_Found') }}">
+    {% endif %}
+{% else %}
+<div class="text-center">
+    <h2 style="text-align: center; color: red">Bạn chưa đăng nhập tài khoản nhấn vào link bên dưới để đăng nhập</h2>
+    <div align="center">
+        <a href="{{ url_for('employee_login') }}">Nhấn vào đây để đăng nhập tài khoản</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

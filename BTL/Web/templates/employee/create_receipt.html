@@ -1,0 +1,72 @@
+{% extends 'employee/pay.html' %}
+{% block content %}
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<div class="container">
+    <h1 class="text-center text-danger">Thông tin hóa đơn của bệnh nhân</h1>
+    {% if err_msg %}
+    <div class="alert text-center alert-danger container">
+        {{ err_msg }}
+    </div>
+    {% endif %}
+    <div class="col-xs-12">
+        <p><b class="text-danger">Chú ý: </b>Bắt buộc nhập ngày hoặc tháng hoặc năm</p>
+        <form action="{{ url_for('receipt') }}">
+            <div class="form-group">
+                <label for="guest_id">Mã bệnh nhân<sup>*</sup></label>
+                <input type="text" class="form-control" id="guest_id" name="guest_id" placeholder="Nhap ma bệnh nhân..." />
+                <p style="font-size: 12px"><b class="text-danger">Chú ý: </b>Bắt buộc nhập mã bệnh nhân</p>
+            </div>
+            <div class="form-group">
+                <label for="day">Ngày</label>
+                <input type="text" class="form-control" id="day" name="day" placeholder="Nhap ngay..." />
+            </div>
+            <div class="form-group">
+                <label for="month">Tháng</label>
+                <input type="text" class="form-control" id="month" name="month" placeholder="Nhap thang..." />
+            </div>
+            <div class="form-group">
+                <label for="year">Năm</label>
+                <input type="text" class="form-control" id="year" name="year" placeholder="Nhap nam..." />
+            </div>
+            <input type="submit" value="Xuất hóa đơn" class="btn btn-success" />
+        </form>
+    </div>
+    <br>
+    {% if receipt %}
+    <div>
+        <table class="table border border-warning" id="Receipt">
+            <tr>
+                <th class="text-center text-danger border border-dark" style="background-color: #bee5eb" colspan="6"><h1>HÓA ĐƠN KHÁM BỆNH</h1></th>
+            </tr>
+            <tr>
+                <th class="table-primary border border-dark">Họ tên</th>
+                {% for s in receipt %}
+                <td class="border border-dark">{{ s[0] }}</td>
+                {% endfor %}
+                <th class="table-primary border border-dark">Ngày khám</th>
+                {% for s in receipt %}
+                <td class="border border-dark">{{ s[1].strftime('%d-%m-%Y') }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th class="table-primary border border-dark">Tiền khám</th>
+                {% for s in receipt %}
+                <td class="border border-dark">{{ s[2] }}</td>
+                {% endfor %}
+                <th class="table-primary border border-dark">Tiền thuốc</th>
+                {% for s in receipt %}
+                <td class="border border-dark">{{ s[3] }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th class="table-primary border border-dark">Tổng tiền</th>
+                {% for s in receipt %}
+                <td class="border border-dark text-center" colspan="3">{{ s[4] }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+        <button class="btn btn-danger" onclick="ExportToExcel('xlsx', 'Receipt')">Export table to excel</button>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

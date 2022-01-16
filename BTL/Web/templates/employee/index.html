@@ -1,0 +1,109 @@
+{% extends 'layout/base.html' %}
+{% block header %}
+    <div class="container">
+        <div class="header-top clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <p><i class="fas fa-ambulance"></i>Chào mừng đến với phòng khám <span>SonHoang</span></p>
+                </div>
+                <div class="col-lg-8 col-md-8 text-right">
+                    <p>
+                        <i class="fas fa-door-open"></i>
+                        Mở cửa :
+                        <span>Thứ 2 đến Thứ 7 6:30 – 19:00 | Chủ Nhật 7:00 – 11:30</span>
+                        <br class="visible-xs">
+                        &nbsp;&nbsp;
+                        <i class="fas fa-phone-alt"></i>
+                        Số điện thoại :
+                        <span>1951052171</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="sticky-top">
+        <nav class="navbar navbar-expand-md navbar-dark">
+          <!-- Brand -->
+          <a class="navbar-brand" href="/"><i class="fas fa-hospital-alt"> SONHOANG</i></a>
+          <!-- Toggler/collapsibe Button -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Navbar links -->
+          <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/employee"><i class="text-primary fas fa-home"> Trang chủ</i></a>
+              </li>
+              {% if current_user.is_authenticated %}
+
+                  <li class="nav-item">
+                    <a class="nav-link text-danger" href="{{ url_for('employee_account', employee_id=current_user.id) }}">
+                      {% if current_user.avatar %}
+                        <img src="{{ current_user.avatar }}" class="rounded-circle" width="30" height="30" alt="{{ current_user.username }}" />
+                      {% else %}
+                        <img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1639919141/ldcweikq3dgs0i3yf7k7.jpg" class="rounded-circle" width="30" alt="{{ current_user.username }}" />
+                      {% endif %}
+                      {{ current_user.username }}
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-success" href="{{ url_for('logout') }}"><i class="text-danger fas fa-sign-out-alt"> Đăng xuất</i></a>
+                  </li>
+              {% endif %}
+            </ul>
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item"><a class="nav-link" href="{{ url_for('List_form') }}">Lập danh sách khám</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url_for('Add_form') }}">Lập phiếu khám</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url_for('Add_receipt') }}">Lập hóa đơn</a></li>
+              </ul>
+              <button class="search" id="search"><i class="fas fa-search"></i></button>
+          </div>
+        </nav>
+        <div class="fix" id="search1">
+            <form class="form-inline fix1" >
+                <input class="form-control" type="text" name="keyword" placeholder="Nhap tu khoa...">
+                <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+    <div class="container">
+        <br>
+        {% if err_msg %}
+        <div class="alert text-center alert-danger container">
+            {{ err_msg }}
+        </div>
+        {% else %}
+        <h1 class="text-center text-danger">CHÀO MỪNG BẠN QUAY TRỞ LẠI {{ current_user.name }}</h1>
+        <br>
+        {% if medicine %}
+        <div class="row">
+            {% for m in medicine %}
+            <div class="col-md-3 col-xs-12 medicine">
+                <div class="card">
+                    <img class="card-img-top" src="{{ url_for('static', filename=m.image) }}" alt="{{ m.name }}">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ m.name }}</h4>
+                        <p class="card-text">{{ "{:,.1f}".format(m.price) }} VND</p>
+                        <a href="{{ url_for('medicine_detail', medicine_id=m.id) }}" class="btn btn-danger">Chi tiết</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p><i>Không có thuốc</i></p>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% else %}
+    <meta http-equiv="refresh" content="0;url={{url_for('employee_login')}}">
+    {% endif %}
+{% endblock %}

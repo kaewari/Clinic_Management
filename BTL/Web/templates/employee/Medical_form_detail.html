@@ -1,0 +1,30 @@
+{% extends 'employee/pay.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center text-danger">Thông tin phiếu khám</h1>
+    {% if details %}
+    <div class="row">
+        {% for d in details %}
+        <br>
+        <div class="col-md-4 col-xs-12">
+            <div class="card">
+                <div class="card-body text-left" style="background-color: #e9ecef2e">
+                    <h4><span class="text-danger">Mã bệnh nhân: </span>{{ d.guest_id }}</h4>
+                    <h4><span class="text-danger">Mã toa thuốc: </span>{{ d.id }}</h4>
+                    <h4><span class="text-danger">Tên bệnh nhân: </span>{{ d.guest.name }}</h4>
+                    <h5><span class="text-info">Tên bác sỹ khám: </span>{{ d.doctor.name }}</h5>
+                    <h5><span class="text-info">Ngày lập: </span>{{ d.created_date }}</h5>
+                    <h5><span class="text-info">Triệu chứng: </span>{{ d.symptom }}</h5>
+                    <h5><span class="text-info">Chuẩn đoán: </span>{{ d.diagnose_disease }}</h5>
+                    <a href="{{ url_for('toathuoc_detail', toathuoc_id=d.id )}}" class="btn btn-info">Xem chi tiết toa thuốc</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p><i>Không có phiếu khám</i></p>
+    {% endif %}
+</div>
+{% endblock %}

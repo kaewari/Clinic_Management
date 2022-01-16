@@ -1,0 +1,27 @@
+{% extends 'employee/pay.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center text-danger">Thông tin chi tiết toa thuốc của bệnh nhân</h1>
+    {% if toathuoc %}
+    <br>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Mã toa</th>
+            <th>Mã thuốc</th>
+            <th>Số lượng</th>
+            <th>Cách dùng</th>
+        </tr>
+        {% for t in toathuoc %}
+        <tr>
+            <td>{{ t.toathuoc_id }}</td>
+            <td>{{ t.medicine_id }}</td>
+            <td>{{ t.quantity }}</td>
+            <td>{{ t.how_to_use }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <i>Không có toa thuốc</i>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'employee/list.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center text-danger">Tạo danh sách mới</h1>
+    {% if err_msg %}
+    <div class="alert text-center alert-danger container">
+        {{ err_msg }}
+    </div>
+    {% endif %}
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th class="text-danger">Mã danh sách hiện tại</th>
+        </tr>
+        <tr>
+            <td class="text-dark">{{ list[0][0] }}</td>
+        </tr>
+    </table>
+    <h4><b class="text-danger"><sup>*</sup>Chú ý: </b>Mỗi ngày tạo mới danh sách 1 lần</h4>
+    <form method="post" action="{{ url_for('create_list') }}">
+        <button class="btn btn-danger" id="btn1" type="submit">Tạo danh sách mới</button>
+    </form>
+
+</div>
+<script>
+$(document).ready(function(){
+        $("#btn1").click(function(){
+            if (confirm('Bạn chắc chắn muốn tạo danh sách mới không?') == false) {
+                $('form').submit(function(e){
+                    e.preventDefault();
+                });
+            }
+        })
+});
+</script>
+{% endblock %}

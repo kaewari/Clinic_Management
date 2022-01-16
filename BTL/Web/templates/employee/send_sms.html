@@ -1,0 +1,42 @@
+{% extends 'employee/list.html' %}
+{% if current_user.is_authenticated %}
+    {% block content %}
+    <br>
+    <h1 class="text-center text-danger">SOẠN TIN NHẮN</h1>
+    <br>
+    {% if msg %}
+    <div class="alert text-center alert-success container">
+        {{ msg }}
+    </div>
+    {% endif %}
+    {% if notify %}
+    <div class="alert text-center alert-warning container">
+        {{ notify }}
+    </div>
+    {% endif %}
+    <br>
+    <div class="container">
+        <form action="{{ url_for('Send_SMS') }}" method="post">
+            <div class="form-group">
+                <h4 class="modal-title">LIÊN HỆ</h4>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="phone_number">Điện thoại</label>
+                    <input type="number" id="phone_number" name="phone_number" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="content">Nội dung</label>
+                    <input type="text" id="content" name="content" class="form-control" />
+                </div>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-info"/>
+            </div>
+        </form>
+    </div>
+<br>
+    {% endblock %}
+{% endif %}

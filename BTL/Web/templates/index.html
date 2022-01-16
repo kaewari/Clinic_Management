@@ -1,0 +1,193 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Trang chu{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="background-color: #d5eefe87">
+	<br>
+	{% if notify %}
+	<div class="alert text-center alert-success container">
+		{{ notify }}
+	</div>
+	{% endif %}
+	<br>
+	<h1 style="font-size: 60px" class="text-center text-danger">PHÒNG KHÁM Y KHOA</h1>
+	<br>
+	<!-- Carousel -->
+	<div class="container-fluid col-xs-12">
+		<div class="content-img">
+			<div id="slides" class="carousel slide" data-ride="carousel">
+				<ul class="carousel-indicators">
+					<li data-target="#slides" data-slide-to="0" class="active"></li>
+					<li data-target="#slides" data-slide-to="1"></li>
+					<li data-target="#slides" data-slide-to="2"></li>
+					<li data-target="#slides" data-slide-to="3"></li>
+				</ul>
+				<div class="carousel-inner">
+					<div class="carousel-caption">
+						<h1 class="display-2" style="color: red">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI PHÒNG KHÁM SONHOANG</h1>
+						<br>
+						<a href="{{ url_for('appointment')}}" style="font-size: 30px">Đăng ký khám</a>
+					</div>
+					<div class="carousel-item active">
+						<img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389772/4_ztxhhy.jpg">
+					</div>
+					<div class="carousel-item">
+						<img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389771/6_ogd7aq.jpg">
+					</div>
+					<div class="carousel-item">
+						<img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389770/5_vjojtl.jpg">
+					</div>
+					<div class="carousel-item">
+						<img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389769/1_cxewia.jpg">
+					</div>
+				</div>
+				<a class="carousel-control-prev" href="#slides" data-slide="prev">
+					<span class="carousel-control-prev-icon"></span>
+				</a>
+				<a class="carousel-control-next" href="#slides" data-slide="next">
+					<span class="carousel-control-next-icon"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="container_fluid col-xa-12" style="padding-bottom: 10rem;">
+		<div class="container col-xs-12" style="padding-bottom: 5rem;">
+			<h1 class="text-center text-danger">Các chuyên khoa và dịch vụ</h1>
+			<br><br>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="tab-main row">
+						<div class="col-lg-4 col-md-4 col-sm-4">
+							<div class="tab-title"><h6>Đăng ký khám</h6></div>
+							<div class="tab-title"><h6>Dịch vụ khám sức khỏe</h6></div>
+							<div class="tab-title"><h6>Khám ngoại trú</h6></div>
+							<div class="tab-title"><h6>Điều trị nội trú</h6></div>
+						</div>
+						<div class="col-lg-8 col-md-8 col-sm-8">
+							<div class="tab-content">
+								<article class="content">
+									<div class="row">
+										<div class="com-md-6"><img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389770/dich-vu-kham_1_m6d97b.jpg" width="200px" height="250	px"></div>
+										<div class="col-md-6">
+											<h5>Đăng ký khám</h5>
+											<p>
+												Phòng khám cung cấp cho quý khách dịch vụ đăng ký khám để quý khách thuận tiện hơn trong việc sắp xếp thời gian khám
+											</p>
+										</div>
+									</div>
+								</article>
+								<article class="content">
+									<div class="row">
+										<div class="com-md-6"><img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389771/dich-vu-kham_3_q2tgpt.jpg" width="200px" height="250	px"></div>
+										<div class="col-md-6">
+											<h5>Dịch vụ khám sức khỏe</h5>
+											<p>
+												Gói khám sức khỏe tổng quát VIP 2021 với các dịch vụ cơ bản kiểm tra tổng thể sức khỏe của khách hàng:
+												từ thăm khám lâm sàng và cận lâm sàng phát hiện các yếu tố nguy cơ gây bệnh từ đó điều chỉnh,
+												thay đổi nhằm dự phòng không để không xảy ra bệnh.
+											</p>
+										</div>
+									</div>
+								</article>
+								<article class="content">
+									<div class="row">
+										<div class="com-md-6"><img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389771/dich-vu-kham_2_btbfld.jpg" width="200px" height="250	px"></div>
+										<div class="col-md-6">
+											<h5>Khám ngoại trú</h5>
+											<p>
+												Khám ngoại trú được cung cấp tại phòng khám cho những trường hợp không cần thiết phải nhập viện hoặc
+												nằm viện một ngày trong các cơ sở y tế, các bác sĩ phường và các bác sĩ chuyên khoa đảm bảo khám ngoại trú
+											</p>
+										</div>
+									</div>
+								</article>
+								<article class="content">
+									<div class="row">
+										<div class="com-md-6"><img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641389771/dich-vu-kham_4_oyqgks.jpg" width="200px" height="250	px"></div>
+										<div class="col-md-6">
+											<h5>Điều trị nội trú</h5>
+											<p>
+												Nếu căn bệnh đòi hỏi phải điều trị nội trú thì bác sĩ phường hoặc bác sĩ ngoại trú chuyên khoa sẽ giới thiệu bệnh nhân điều trị tại các cơ sở y tế của nhà cung cấp điều trị nội trú, hoặc là bác sĩ tự gửi bệnh nhân nhập viện
+											</p>
+										</div>
+									</div>
+								</article>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr size="5px" color="red" width="80%" align="center">
+		<div class="container" style="padding-top: 5rem; font-size: 25px">
+		<div class="row">
+			<div class="col-md-3 col-xs-12 text-center">
+				<img loading="lazy" src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641671997/intro_jq9efj.jpg" style="max-width: 100%">
+				<div class="entry-content">
+					<p style="text-align: center;">Khoa cấp cứu của phòng khám hoạt động liên tục. Chuyên…</p>
+					<a href="{{ url_for('emergency') }}">Tìm hiểu thêm</a>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-12 text-center">
+				<img loading="lazy" src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641675813/eye_boty9a.jpg" style="max-width: 100%">
+				<div class="entry-content">
+					<p style="text-align: center;">Khoa mắt của phòng khám hoạt động liên tục. Chuyên…</p>
+					<a href="{{ url_for('eye') }}">Tìm hiểu thêm</a>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-12 text-center">
+				<img loading="lazy" src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641671398/building_pckuyh.jpg" style="max-width: 100%">
+				<div class="entry-content">
+					<p style="text-align: center;">Khoa răng hàm mặt của phòng khám hoạt động liên tục. Chuyên…</p>
+					<a href="{{ url_for('teeth') }}">Tìm hiểu thêm</a>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-12 text-center">
+				<img loading="lazy" src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641675814/otolaryngology_ctbr2r.jpg" style="max-width: 100%">
+				<div class="text-center">
+					<p style="text-align: center;">Khoa tai mũi họng của phòng khám hoạt động liên tục. Chuyên…</p>
+					<a href="{{ url_for('otolaryngology') }}">Tìm hiểu thêm</a></div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div class="social">
+		<div class="fixed">
+			<h6 class="fas fa-address-book"> <a type="email" href="#" data-toggle="modal" data-target="#myModal">Liên hệ</a></h6>
+			<a href="https://www.facebook.com/okawarivn/" class="fab fa-facebook-square"> Facebook</a>
+			<a href="https://www.instagram.com/sonhoang1080/" class="fab fa-twitter-square"> Instagram</a>
+		</div>
+	</div>
+	<div class="modal fade" id="myModal">
+		 <div class="modal-dialog">
+			 <form class="modal-content" method="post" action="https://formspree.io/f/xbjwlprw">
+				 <div class="modal-header">
+					 <h4 class="modal-title">LIÊN HỆ</h4>
+					 <button type="button" class="close" data-dismiss="modal">&times;</button>
+				 </div>
+				 <div class="modal-body">
+					 <div class="form-group">
+						 <label for="email">Email</label>
+						 <input type="email" id="email" name="email" class="form-control" />
+					 </div>
+					 <div class="form-group">
+						 <label for="subject">Tiêu đề</label>
+						 <input type="text" id="subject" name="subject" class="form-control" />
+					 </div>
+					 <div class="form-group">
+						 <label for="content">Nội dung liên hệ</label>
+						 <textarea class="form-control" name="content" id="content"></textarea>
+					 </div>
+				 </div>
+				 <div class="modal-footer">
+					 <input type="submit" class="btn btn-info"/>
+					 <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+				 </div>
+			 </form>
+		 </div>
+	 </div>
+</div>
+
+{% endblock %}

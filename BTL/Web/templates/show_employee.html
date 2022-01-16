@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<br>
+<h1 class="text-center text-danger">DANH SÁCH NHÂN VIÊN</h1>
+{% if employee %}
+        <div class="container">
+            <div class="row">
+                {% for d in employee %}
+                <div class="col-md-3 col-xs-12">
+                    <div class="card">
+                        <img class="card-img-top" src="{{d.avatar}}" alt="{{ d.name }}">
+                        <div class="card-body" style="height: 150px; width: 270px">
+                            <h4 class="card-title text-danger">{{ d.name }}</h4>
+                            <p class="card-text"><span class="text-primary">Email:</span> {{ d.email }}</p>
+                            <p class="card-text"><span class="text-primary">Ngày gia nhập:</span> {{ d.joined_date }}</p>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+{% endif %}
+{% endblock %}

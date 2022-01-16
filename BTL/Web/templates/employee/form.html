@@ -1,0 +1,90 @@
+{% extends 'employee/prescription.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<div class="container">
+    <h1 class="text-center text-danger">Thông tin phiếu khám của bệnh nhân</h1>
+    {% if err_msg %}
+    <div class="alert text-center alert-danger container">
+        {{ err_msg }}
+    </div>
+    {% endif %}
+    <div class="col-xs-12">
+        <p><b class="text-danger">Chú ý: </b>Bắt buộc nhập ngày hoặc tháng hoặc năm</p>
+        <form action="{{ url_for('form') }}">
+            <div class="form-group">
+                <label for="guest_id">Mã bệnh nhân<sup>*</sup></label>
+                <input type="text" class="form-control" id="guest_id" name="guest_id" placeholder="Nhap ma bệnh nhân..." />
+                <p style="font-size: 12px"><b class="text-danger">Chú ý: </b>Bắt buộc nhập mã bệnh nhân</p>
+            </div>
+            <div class="form-group">
+                <label for="day">Ngày</label>
+                <input type="text" class="form-control" id="day" name="day" placeholder="Nhap ngay..." />
+            </div>
+            <div class="form-group">
+                <label for="month">Tháng</label>
+                <input type="text" class="form-control" id="month" name="month" placeholder="Nhap thang..." />
+            </div>
+            <div class="form-group">
+                <label for="year">Năm</label>
+                <input type="text" class="form-control" id="year" name="year" placeholder="Nhap nam..." />
+            </div>
+            <input type="submit" value="Xuất phiếu khám" class="btn btn-success" />
+        </form>
+    </div>
+    {% if form %}
+    <br>
+    <div>
+        <table class="table border border-warning" id="medical_table">
+            <tr>
+                <th class="text-center text-danger border border-dark" style="background-color: #bee5eb" colspan="6"><h1>PHIEU KHAM BENH</h1></th>
+            </tr>
+            <tr>
+                <th class="table-primary border border-dark" colspan="3" id="name1">Name</th>
+                {% for s in form %}
+                <td class="border border-dark">{{ s[0] }}</td>
+                {% endfor %}
+                <th class="table-primary border border-dark" id="created_date1">Date</th>
+                {% for s in form %}
+                <td class="border border-dark">{{ s[1].strftime('%d-%m-%Y') }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th class="table-primary border border-dark" colspan="3" id="symptom1">Symptom</th>
+                {% for s in form %}
+                <td class="border border-dark">{{ s[2] }}</td>
+                {% endfor %}
+                <th class="table-primary border border-dark" id="diagnose1">Diagnose</th>
+                {% for s in form %}
+                <td class="border border-dark">{{ s[3] }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="table-primary text-center">
+                <th class="border border-dark">STT</th>
+                <th class="border border-dark" colspan="2">Thuốc</th>
+                <th class="border border-dark">Đơn vị tính</th>
+                <th class="border border-dark">Số lượng</th>
+                <th class="border border-dark">Cách dùng</th>
+            </tr>
+            {% set stt = namespace(value=1) %}
+            {% for s in toathuoc %}
+            <tr class="text-center">
+                <td class="border border-dark">{{ stt.value }}</td>
+                <td class="border border-dark" colspan="2">{{ s[0] }}</td>
+                <td class="border border-dark">{{ s[1] }}</td>
+                <td class="border border-dark">{{ s[2] }}</td>
+                <td class="border border-dark">{{ s[3] }}</td>
+                {% set stt.value = stt.value + 1 %}
+                {% endfor %}
+            </tr>
+        </table>
+        <button class="btn btn-danger" onclick="ExportToExcel('xlsx', 'medical_table')">Export table to excel</button>
+    </div>
+    {% else %}
+    <i>Không có phiếu khám</i>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

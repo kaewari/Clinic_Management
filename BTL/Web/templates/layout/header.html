@@ -1,0 +1,104 @@
+<div class="header-top clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <p><i class="fas fa-ambulance"></i>Chào mừng các bạn đến với phòng khám <span>SonHoang</span></p>
+            </div>
+            <div class="col-lg-8 col-md-8 text-right">
+                <p>
+                    <i class="fas fa-door-open"></i>
+                    <b>Mở cửa :</b>
+                    <span>Thứ 2 đến Thứ 7 6:30 – 19:00 | Chủ Nhật 7:00 – 11:30</span>
+                    <br class="visible-xs">
+                    &nbsp;&nbsp;
+                    <i class="fas fa-phone-alt"></i>
+                    <b>Số điện thoại :</b>
+                    <span>1951052171</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sticky-top">
+    <nav class="navbar navbar-expand-md navbar-dark">
+      <!-- Brand -->
+      <a class="navbar-brand" href="/"><i class="fas fa-hospital-alt"> SONHOANG</i></a>
+      <!-- Toggler/collapsibe Button -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="text-primary fas fa-home"> Trang chủ</i></a>
+          </li>
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-danger" href="{{ url_for('user_info') }}">
+              {% if current_user.avatar %}
+                <img src="{{ current_user.avatar }}" class="rounded-circle" width="30" height="30" alt="{{ current_user.username }}" />
+              {% else %}
+                <img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1639919141/ldcweikq3dgs0i3yf7k7.jpg" class="rounded-circle" width="30" height="30" alt="{{ current_user.username }}" />
+              {% endif %}
+              {{ current_user.username }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-success" href="{{ url_for('logout') }}"><i class="text-danger fas fa-sign-out-alt"> Đăng xuất</i></a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link text-danger" href="{{ url_for('register') }}"><i class="fas fa-user-plus text-danger"> Đăng ký</i></a>
+          </li>
+          <li class="nav-item" onclick="myFunction()">
+            <a class="nav-link text-success" href="{{ url_for('user_login') }}"><i class="fas fa-sign-in-alt text-info"> Đăng nhập</i></a>
+          </li>
+          {% endif %}
+        </ul>
+          <ul class="navbar-nav menu ml-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Về chúng tôi<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item"><a href="{{ url_for('intro') }}">Giới thiệu</a></li>
+                    <li class="dropdown-item"><a href="{{ url_for('show_employee') }}">Nhân viên</a></li>
+                    <li class="dropdown-item"><a href="{{ url_for('building') }}">Cơ sở vật chất</a></li>
+                    <li class="dropdown-item"><a href="{{ url_for('open_door') }}">Thời gian hoạt động</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Chuyên khoa<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item"><a href="{{ url_for('otolaryngology') }}">Khoa tai mũi họng</a></li>
+                    <li class="dropdown-item"><a href="{{ url_for('eye') }}">Khoa mắt</a></li>
+                    <li class="dropdown-item"><a href="{{ url_for('teeth') }}">Nha khoa</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Tin tức<span class="caret"></span></a>
+               <ul class="dropdown-menu">
+                    <li class="dropdown-item"><a href="{{ url_for('news') }}">Thông tin y khoa</a></li>
+                    <li class="dropdown-item"><a href="{{ url_for('ask') }}">Hỏi đáp</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Liên hệ<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item"><p style="color: #fff"><span style="color: red">SĐT:</span>1951052171</p></li>
+                    <li class="dropdown-item"><p style="color: #fff"><span style="color: red">Email:</span>1951052171son@ou.edu.vn</p></li>
+                </ul>
+            </li>
+        </ul>
+          <button class="search" id="search"><i class="fas fa-search"></i></button>
+      </div>
+    </nav>
+    <div class="fix2" id="search1">
+        <form class="form-inline fix3" >
+            <input class="form-control" type="text" name="keyword" placeholder="Nhap tu khoa...">
+            <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+</div>
+
+

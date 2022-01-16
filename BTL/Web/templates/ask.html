@@ -1,0 +1,51 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<div class="container" style="height: 1000px">
+    <div class="parallax-ask-img"></div>
+    <br>
+    <h1 class="text-center text-danger">HỎI ĐÁP</h1>
+    <br>
+    <p>
+        Nếu bạn có thắc mắc về các vấn đề sức khỏe và bạn cần được tư vấn, hãy đặt câu hỏi tư vấn của bạn để được các Bác sĩ Chuyên khoa của chúng tôi giải đáp.
+    </p>
+    <div style="text-align: center">
+        <h6><a href="#" class="btn btn-danger" style="button" data-toggle="modal" data-target="#myModal">Đặt câu hỏi</a></h6>
+    </div>
+    <div class="modal fade" id="myModal">
+		 <div class="modal-dialog">
+			 <form class="modal-content" method="post" action="https://formspree.io/f/xbjwlprw">
+				 <div class="modal-header">
+					 <h4 class="modal-title text-danger">ĐẶT CÂU HỎI</h4>
+					 <button type="button" class="close" data-dismiss="modal">&times;</button>
+				 </div>
+				 <div class="modal-body">
+					 <div class="form-group">
+						 <label for="email">Email</label>
+						 <input type="email" id="email" name="email" class="form-control" />
+					 </div>
+					 <div class="form-group">
+						 <label for="subject">Tiêu đề</label>
+						 <input type="text" id="subject" name="subject" class="form-control" />
+					 </div>
+					 <div class="form-group">
+						 <label for="content">Nội dung liên hệ</label>
+						 <textarea class="form-control" name="content" id="content"></textarea>
+					 </div>
+				 </div>
+				 <div class="modal-footer">
+					 <input type="submit" class="btn btn-info"/>
+					 <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+				 </div>
+			 </form>
+		 </div>
+	 </div>
+    <br>
+    <div style="padding: 10px; box-shadow: 0px 0px 10px">
+        <p>PHÒNG KHÁM Y KHOA SONHOANG</p>
+        <p>» Địa chỉ: số 458, Quận 2, Thành phố Hồ Chí Minh.</p>
+        <p>» Email: 1951052171son@ou.edu.vn</p>
+        <p>» Hotline: 1951052171</p>
+        <p>» Đặt khám: 192168711</p>
+    </div>
+</div>
+{% endblock %}

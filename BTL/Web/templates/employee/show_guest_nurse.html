@@ -1,0 +1,26 @@
+{% extends 'employee/list.html' %}
+{% block content %}
+<h1 class="text-center text-danger">Thông tin chi tiết bệnh nhân</h1>
+<div class="container">
+    {% if guest %}
+    <div class="row">
+        {% for g in guest %}
+        <br>
+        <div class="col-md-3 col-xs-12">
+            <div class="card">
+                <img class="card-img-top" src="{{ g[2] }}" alt="{{ g[1] }}">
+                <div class="card-body">
+                    <h3><span class="text-info">Mã bệnh nhân: </span>{{ g[0] }}</h3>
+                    <h2 class="card-title text-danger">{{ g[1] }}</h2>
+                    <a href="{{ url_for('detail', guest_id=g[0] ) }}" class="btn btn-danger">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p><i>Không có bệnh nhân</i></p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+{% if current_user.is_authenticated %}
+    {% if current_user.user_role.__eq__('USER') %}
+    <div class="container">
+        <h1 class="text-center text-danger">THÔNG TIN TÀI KHOẢN</h1>
+        <div class="row">
+            <form class="col-md-6 col-xs-12" method="post" action="{{url_for('user_info')}}" enctype="multipart/form-data">
+                <div class="form-group">
+                   <label for="name"><b>Họ tên</b></label>
+                   <input type="text" name="name" class="form-control"
+                          id="name" value="{{ current_user.name }}" placeholder="Nhap ho ten..." required />
+               </div>
+                <div class="form-group">
+                   <label for="username"><b>Username</b></label>
+                   <input type="text" name="username" class="form-control"
+                          id="username" value="{{ current_user.username }}" placeholder="Nhap username..." required />
+               </div>
+                <div class="form-group">
+                   <label for="email"><b>Email</b></label>
+                   <input type="email" name="email" class="form-control"
+                          id="email" value="{{ current_user.email }}" placeholder="Nhap email..." />
+               </div>
+                <div class="form-group">
+                   <label for="gender"><b>Giới tính</b></label>
+                    <div id="gender">
+                        <input type="radio" name="gender" value="Male"> Male<br>
+                        <input type="radio" name="gender" value="Female"> Female<br>
+                        <input type="radio" name="gender" value="Others"> Others<br>
+                    </div>
+               </div>
+                <div class="form-group">
+        <label for="city"><b>Tỉnh/Thành</b></label>
+            <select id="city" name="city">
+                {% set count = namespace(value=1) %}
+                {% for c in city %}
+                <option value="{{count.value}}">{{ c.name }}</option>
+                {% set count.value = count.value + 1 %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="district"><b>Quận/Huyện</b></label>
+            <select id="district" name="district">
+                {% set count = namespace(value=1) %}
+                {% for c in district %}
+                <option value="{{count.value}}">{{ c.name }}</option>
+                {% set count.value = count.value + 1 %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ward"><b>Phường/Xã</b></label>
+            <select id="ward" name="ward">
+                {% set count = namespace(value=1) %}
+                {% for c in ward %}
+                <option value="{{count.value}}">{{ c.name }}</option>
+                {% set count.value = count.value + 1 %}
+                {% endfor %}
+            </select>
+        </div>
+                <div id="show1" class="form-group">
+                   <label for="avatar"><b>Ảnh đại diện</b></label>
+                   <input type="file"
+                          name="avatar"
+                          class="form-control"
+                          id="avatar"/>
+                </div>
+                <div>
+                    <input type="button" value="Change avatar" onclick="ShowFormChangeAvatar()"/>
+                </div>
+                <br>
+                <input type="submit" value="Submit" class="btn btn-success" />
+            </form>
+            <div class="col-md-6 col-xs-12">
+                <div>
+                    <p><b>Ảnh đại diện</b></p>
+                    {% if current_user.avatar %}
+                        <img src="{{ current_user.avatar }}" width="220" height="220">
+                    {% else %}
+                        <img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641213580/p5mj8bfdqdubourty8uk.jpg" width="300">
+                    {% endif %}
+                </div>
+                <br>
+                <div>
+                    <p><b>Bảo mật</b></p>
+                    <p>Đổi mật khẩu</p>
+                    <a href="{{url_for('change_user_password')}}"><b>Change password</b></a>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endif %}
+    {% else %}
+    <h1 class="text-center text-danger">BẠN CHƯA ĐĂNG NHẬP TÀI KHOẢN</h1>
+    <div align="center">
+        <a class="text-center" href="{{ url_for('user_login') }}">Nhấn vào đây để đăng nhập tài khoản</a>
+    </div>
+    </div>
+{% endif %}
+<script>
+    document.getElementById('show1').style.display = "none";
+    function ShowFormChangeAvatar(){
+        if(document.getElementById('show1').style.display == "none")
+            document.getElementById('show1').style.display = "block";
+        else
+            document.getElementById('show1').style.display = "none";
+    }
+</script>
+{% endblock %}

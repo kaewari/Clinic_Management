@@ -1,0 +1,41 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<br>
+<h1 class="text-center text-danger">ĐĂNG KÝ KHÁM BỆNH</h1>
+{% if error_msg %}
+<div class="alert text-center alert-danger container">
+    {{ error_msg }}
+</div>
+{% endif %}
+{% if current_user.is_authenticated %}
+<form class="container" method="post" action="{{ url_for('appointment') }}" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="phone_number"><b>SĐT</b></label>
+        <input type="number" name="phone_number" class="form-control"
+               id="phone_number" placeholder="Nhập SĐT..." />
+    </div>
+    <div>
+        <p style="font-size: 12px">Ex: 01264712673 (11 số hoặc 10 số)</p>
+    </div>
+    <div class="form-group">
+        <label for="ID_card"><b>CMND</b></label>
+        <input type="number" name="ID_card" class="form-control"
+               id="ID_card" placeholder="Nhập CMND..." />
+    </div>
+    <div>
+        <p style="font-size: 12px">Ex: 295748703452 (12 số)</p>
+    </div>
+    <div class="form-group">
+        <label for="created_date"><b>Ngày hẹn khám</b></label>
+        <input type="datetime-local" name="created_date" class="form-control"
+               id="created_date" placeholder="Nhập SĐT..." />
+        <p style="font-size: 12px">Chú ý: Chọn ngày khám sau ngày hiện tại. Chỉ khám trong thời gian quy định. Xem chi tiết tại <a href="{{ url_for('open_door') }}">đây</a></p>
+    </div>
+    <input type="submit" value="Submit" class="btn btn-success" />
+</form>
+{% else %}
+<h6 class="text-center text-info"><a href="{{url_for('user_login')}}">Bạn chưa đăng nhập tài khoản. Nhấn vào đây để đăng nhập</a></h6>
+{% endif %}
+<br>
+{% endblock %}
