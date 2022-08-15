@@ -120,6 +120,24 @@ class Cities(AuthenticatedView):
     column_display_pk = True
 
 
+class Districts(AuthenticatedView):
+    can_view_details = True
+    can_export = True
+    details_modal = True
+    edit_modal = True
+    create_modal = True
+    column_display_pk = True
+
+
+class Wards(AuthenticatedView):
+    can_view_details = True
+    can_export = True
+    details_modal = True
+    edit_modal = True
+    create_modal = True
+    column_display_pk = True
+
+
 class Countries(AuthenticatedView):
     can_view_details = True
     can_export = True
@@ -179,7 +197,7 @@ class AuthenticatedBaseView(BaseView):
         return current_user.is_authenticated and check_manager()
 
 
-class LogoutView(AuthenticatedBaseView):
+class LogoutView(BaseView):
     @expose('/')
     def index(self):
         user = User.query.get(current_user.id)
@@ -265,17 +283,17 @@ admin.add_view(CategoryView(Category, db.session))
 admin.add_view(MedicineView(Medicine, db.session))
 admin.add_view(UserView(User, db.session))
 admin.add_view(NurseView(Nurse, db.session))
-admin.add_view(GuestView(Guest, db.session))
+# admin.add_view(GuestView(Guest, db.session))
 admin.add_view(CashierView(Cashier, db.session))
 admin.add_view(DoctorView(Doctor, db.session))
-admin.add_view(ManagerView(Manager, db.session))
-admin.add_view(Cities(City, db.session))
-admin.add_view(ModelView(District, db.session))
-admin.add_view(ModelView(Ward, db.session))
+# admin.add_view(ManagerView(Manager, db.session))
+# admin.add_view(Cities(City, db.session))
+# admin.add_view(Districts(District, db.session))
+# admin.add_view(Wards(Ward, db.session))
 # admin.add_view(Countries(Country, db.session))
 # admin.add_view(RuleView(Rule, db.session))
 admin.add_view(StatsView(name='Stats'))
-# admin.add_view(Calculate(name='Calculate'))
+admin.add_view(Calculate(name='Calculate'))
 admin.add_view(Account(name='Account'))
 admin.add_view(ShowReceipt(name='ReceiptDetail'))
 # admin.add_view(PhieuKhamView(PhieuKham, db.session))

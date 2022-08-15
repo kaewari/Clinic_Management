@@ -87,6 +87,7 @@
                     <div class="card">
                         <img class="card-img-top" src="{{ url_for('static', filename=m.image) }}" alt="{{ m.name }}">
                         <div class="card-body">
+                            <h4><b class="text-danger">Mã thuốc: </b>{{ m.id }}</h4>
                             <h4 class="card-title">{{ m.name }}</h4>
                             <a href="#" class="btn btn-primary" onclick="addToMedicalForm({{ m.id }}, '{{ m.name }}')">Chọn</a>
                             <a href="{{ url_for('medicine_detail', medicine_id=m.id) }}" class="btn btn-danger">Chi tiết</a>

@@ -12,7 +12,7 @@
             <th class="text-danger">Mã danh sách hiện tại</th>
         </tr>
         <tr>
-            <td class="text-dark">{{ list[0][0] }}</td>
+            <td class="text-dark">{% if list[0] %} {{ list[0][0] }} {% else %} {{ list[0] }} {% endif %}</td>
         </tr>
     </table>
     <h4><b class="text-danger"><sup>*</sup>Chú ý: </b>Mỗi ngày tạo mới danh sách 1 lần</h4>

@@ -143,8 +143,8 @@ def change_admin_password_account():
             data = request.form.copy()
             del data['confirm']
             del data['password']
-            if utils.change_new_password(**data):
-                return redirect(url_for('admin_login'))
+            if utils.change_new_password(new_password=new_password):
+                return redirect('/admin')
     return render_template('change_admin_password.html', error_msg=error_msg)
 
 
@@ -388,8 +388,9 @@ def create_prescription():
     if check_doctor():
         cate_id = request.args.get('category_id')
         kw = request.args.get('kw')
+        id = request.args.get('id')
         return render_template('employee/prescription.html',
-                               medicine=utils.load_medicine(cate_id=cate_id, kw=kw),
+                               medicine=utils.load_medicine(cate_id=cate_id, kw=kw, id=id),
                                categories=utils.load_categories())
     else:
         return render_template('employee/index.html', err_msg=err_msg)
@@ -420,7 +421,7 @@ def create_form_done():
                                    diagnose_disease=diagnose_disease, how_to_use=how_to_use)
             del session['form']
         else:
-            if how_to_use == "" or symptom == "" or diagnose_disease == "":
+            if guest_id == "" or how_to_use == "" or symptom == "" or diagnose_disease == "":
                 err_msg = "CHƯA NHẬP ĐỦ THÔNG TIN YÊU CẦU"
     except Exception as ex:
         err_msg = str(ex)
@@ -582,10 +583,10 @@ def Add_receipt():
     err_msg = "không được phép truy cập"
     if check_cashier():
         cate_id = request.args.get('category_id')
-        kw = request.args.get('kw')
+        id = request.args.get('id')
         return render_template('employee/pay.html',
                                receipt=utils.load_receipt(),
-                               medicine=utils.load_medicine(cate_id=cate_id, kw=kw),
+                               medicine=utils.load_medicine(cate_id=cate_id, id=id),
                                categories=utils.load_categories(),
                                receipt_detail=utils.load_receipt_detail())
     else:
@@ -623,7 +624,7 @@ def Send_SMS():
                 message = client.messages.create(
                     messaging_service_sid='MG7bd0604d2846a90668deab79fcf9ed39',
                     from_='+19522609468',
-                    body="XIN CHÀO " + str(content),
+                    body="XIN CHÀO " + str(content) + ". BẠN ĐÃ ĐƯỢC THÊM VÀO DANH SÁCH CỦA PHÒNG KHÁM",
                     to='+84' + phone_number
                 )
                 if message.sid:
@@ -726,8 +727,8 @@ def detail(guest_id):
     err_msg = "Không được phép truy cập"
     if check_nurse():
         guest = utils.get_guest_by_id(guest_id=guest_id)
-
-        return render_template('employee/guest_detail_nurse.html', guest=guest)
+        appointment = utils.get_appointment_by_id(guest_id=guest_id)
+        return render_template('employee/guest_detail_nurse.html', guest=guest, appointment=appointment)
     else:
         return render_template('employee/index.html', err_msg=err_msg)
 

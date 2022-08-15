@@ -16,6 +16,7 @@
                 <th>Tên bệnh nhân</th>
                 <th>Username</th>
                 <th>Giới tính</th>
+                <th>SĐT</th>
                 <th>Email</th>
             </tr>
             <tr>
@@ -23,6 +24,7 @@
                 <td>{{ guest.name }}</td>
                 <td>{{ guest.username }}</td>
                 <td>{{ guest.gender }}</td>
+                <td>{% if appointment[0] %} {{ appointment[0][0] }} {% else %} {{ appointment[0] }}{% endif %}</td>
                 <td>{{ guest.email }}</td>
             </tr>
         </table>

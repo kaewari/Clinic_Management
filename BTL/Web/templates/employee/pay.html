@@ -49,7 +49,7 @@
          <button class="search" id="search"><i class="fas fa-search" onclick="ShowFormChangeAvatar()"></i></button>
          <div class="fix" id="search1" style="top: 7%">
             <form class="form-inline fix1" style="top: 9%" >
-                <input class="form-control" type="text" name="kw" placeholder="Nhap tu khoa...">
+                <input class="form-control" type="text" name="id" placeholder="Nhap tu khoa...">
                 <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
             </form>
         </div>
@@ -85,6 +85,7 @@
                     <div class="card">
                         <img class="card-img-top" src="{{ url_for('static', filename=m.image) }}" alt="{{ m.name }}">
                         <div class="card-body">
+                            <h4><b class="text-danger">Mã thuốc: </b>{{ m.id }}</h4>
                             <h4 class="card-title">{{ m.name }}</h4>
                             <p class="card-text">{{ "{:,.1f}".format(m.price) }} VND</p>
                             <a href="#" class="btn btn-primary" onclick="addToCart({{ m.id }}, '{{ m.name }}', {{ m.price }})">Chọn</a>

@@ -40,7 +40,7 @@
               {% if current_user.avatar %}
                 <img src="{{ current_user.avatar }}" class="rounded-circle" width="30" height="30" alt="{{ current_user.username }}" />
               {% else %}
-                <img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1639919141/ldcweikq3dgs0i3yf7k7.jpg" class="rounded-circle" width="30" height="30" alt="{{ current_user.username }}" />
+                <img src="https://res.cloudinary.com/dt8p4xhzz/image/upload/v1660570747/images/user_logo_bozbod.png" class="rounded-circle" width="30" height="30" alt="{{ current_user.username }}" />
               {% endif %}
               {{ current_user.username }}
             </a>
@@ -90,15 +90,13 @@
                 </ul>
             </li>
         </ul>
-          <button class="search" id="search"><i class="fas fa-search"></i></button>
+         <form class="form-inline" >
+             <input class="form-control" type="text" name="keyword" placeholder="Nhap tu khoa...">
+             <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+         </form>
       </div>
+
     </nav>
-    <div class="fix2" id="search1">
-        <form class="form-inline fix3" >
-            <input class="form-control" type="text" name="keyword" placeholder="Nhap tu khoa...">
-            <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
-        </form>
-    </div>
 </div>
 
 

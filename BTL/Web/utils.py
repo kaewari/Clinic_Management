@@ -1,21 +1,29 @@
-from Web import db, app
 import hashlib
+from datetime import datetime
+
+from flask_login import current_user
+from sqlalchemy import func, extract
+from sqlalchemy.exc import IntegrityError
+
+from Web import db
 from Web.models import Category, Medicine, ToaThuoc, ChiTietToaThuoc, \
     ReceiptDetail, Receipt, Appointment, PhieuKham, DanhSachKham, Rule, User, Guest, Cashier, Doctor, Nurse, Manager, \
     City, UserRole, Guest_DanhSach, District, Ward
-from sqlalchemy import func, extract
-from flask_login import current_user
-from datetime import datetime
-import json, os
 
 
 def check_login(username, password, user_role):
     if username and password:
         password = hashlib.md5(password.strip().encode('utf-8')).hexdigest()
-
         return User.query.filter(User.username.__eq__(username.strip()),
                                  User.password.__eq__(password),
                                  User.user_role.__eq__(user_role)).first()
+
+
+def get_appointment_by_id(guest_id):
+    q = db.session.query(Appointment.phone_number)
+    if guest_id:
+        q = q.filter(Appointment.guest_id.__eq__(guest_id))
+    return q
 
 
 def get_doctor_by_id(doctor_id):
@@ -111,7 +119,7 @@ def medicine_month_stats(year=None, month=None, day=None, from_date=None, to_dat
     q = db.session.query(extract('day', Receipt.created_date),
                          extract('month', Receipt.created_date),
                          extract('year', Receipt.created_date),
-                         func.sum(ReceiptDetail.quantity * ReceiptDetail.unit_price),
+                         func.sum(ReceiptDetail.quantity * ReceiptDetail.unit_price) + Receipt.medical_expense,
                          func.count(Receipt.id),
                          func.count(Receipt.id) / func.sum(ReceiptDetail.quantity * ReceiptDetail.unit_price))
     if year:
@@ -127,12 +135,13 @@ def medicine_month_stats(year=None, month=None, day=None, from_date=None, to_dat
     return q.group_by(Receipt.id).all()
 
 
-def create_user(name, username, password, gender, city=None, district=None, date_of_birth=None, ward=None, email=None, avatar=None):
+def create_user(name, username, password, gender, city=None, district=None, date_of_birth=None, ward=None, email=None,
+                avatar=None):
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
     if avatar:
         avatar = avatar
     else:
-        avatar = 'https://res.cloudinary.com/dt8p4xhzz/image/upload/v1641660925/akew2xsulpu7xryxjhdl.jpg'
+        avatar = 'https://res.cloudinary.com/dt8p4xhzz/image/upload/v1660570747/images/user_logo_bozbod.png'
 
     user = Guest(name=name.strip(),
                  username=username.strip(),
@@ -156,7 +165,8 @@ def create_user(name, username, password, gender, city=None, district=None, date
         return True
 
 
-def change_new_info(name=None, username=None, gender=None, active=None, city=None, district=None, ward=None, email=None, avatar=None):
+def change_new_info(name=None, username=None, gender=None, active=None, city=None, district=None, ward=None, email=None,
+                    avatar=None):
     user = User.query.get(current_user.id)
     if name:
         user.name = name
@@ -185,9 +195,10 @@ def change_new_info(name=None, username=None, gender=None, active=None, city=Non
         return True
 
 
-def change_new_password(new_password):
+def change_new_password(new_password=None):
     user = User.query.get(current_user.id)
-    user.password = hashlib.md5(new_password.strip().encode('utf-8')).hexdigest()
+    if new_password:
+        user.password = hashlib.md5(new_password.strip().encode('utf-8')).hexdigest()
     db.session.add(user)
     try:
         db.session.commit()
@@ -285,11 +296,14 @@ def load_form(kw=None):
     return q
 
 
-def load_medicine(kw=None, from_price=None, to_price=None, cate_id=None):
+def load_medicine(kw=None, id=None, from_price=None, to_price=None, cate_id=None):
     medicine = Medicine.query.filter(Medicine.active.__eq__(True))
 
     if cate_id:
         medicine = medicine.filter(Medicine.category_id.__eq__(cate_id))
+
+    if id:
+        medicine = medicine.filter(Medicine.id.__eq__(id))
 
     if kw:
         medicine = medicine.filter(Medicine.name.contains(kw))
@@ -349,22 +363,22 @@ def count(form):
 
 def add_medical_form(form, guest_id, symptom, diagnose_disease, how_to_use):
     if form:
-        medical_form = PhieuKham(doctor_id=current_user.id, guest_id=guest_id,
-                                 symptom=symptom, diagnose_disease=diagnose_disease)
-        db.session.add(medical_form)
-        db.session.commit()
-        prescription = ToaThuoc(doctor_id=current_user.id, guest_id=guest_id,
-                                phieukham_id=medical_form.id)
-        db.session.add(prescription)
-        db.session.commit()
-        for c in form.values():
-            detail = ChiTietToaThuoc(toathuoc_id=prescription.id,
-                                     medicine_id=c['id'],
-                                     quantity=c['quantity'],
-                                     how_to_use=how_to_use)
-            db.session.add(detail)
-
-        db.session.commit()
+        try:
+            medical_form = PhieuKham(doctor_id=current_user.id, guest_id=guest_id,
+                                     symptom=symptom, diagnose_disease=diagnose_disease)
+            db.session.add(medical_form)
+            prescription = ToaThuoc(doctor_id=current_user.id, guest_id=guest_id,
+                                    phieukham_id=medical_form.id)
+            db.session.add(prescription)
+            for c in form.values():
+                detail = ChiTietToaThuoc(toathuoc_id=prescription.id,
+                                         medicine_id=c['id'],
+                                         quantity=c['quantity'],
+                                         how_to_use=how_to_use)
+                db.session.add(detail)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
 
 def select_max_medicine_id():
@@ -470,9 +484,3 @@ def count_list():
     q = db.session.query(DanhSachKham.id). \
         order_by(-DanhSachKham.id)
     return q.all()
-
-
-def delete_list(danhsachkham_id):
-    q = DanhSachKham.query.get(danhsachkham_id)
-    db.session.delete(q)
-    db.session.commit()

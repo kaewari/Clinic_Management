@@ -1,10 +1,9 @@
 from Web import db
-from sqlalchemy import Column, Integer, String, Boolean, Enum, ForeignKey, DateTime, Float
+from sqlalchemy import Column, Integer, String, Boolean, Enum, ForeignKey, DateTime, Float, Numeric
 from enum import Enum as UserEnum
 from flask_login import UserMixin
 from datetime import datetime
 from sqlalchemy.orm import relationship
-import hashlib
 
 
 class BaseModel(db.Model):
@@ -80,9 +79,9 @@ class User(BaseModel, UserMixin):
     gender = Column(Enum(Gender), default=Gender.MALE)
     address = Column(String(50))
     user_role = Column(Enum(UserRole), default=UserRole.USER)
-    city_id = Column(Integer, ForeignKey(City.id), nullable=False)
-    district_id = Column(Integer, ForeignKey(District.id), nullable=False)
-    ward_id = Column(Integer, ForeignKey(Ward.id), nullable=False)
+    city_id = Column(Integer, ForeignKey(City.id))
+    district_id = Column(Integer, ForeignKey(District.id))
+    ward_id = Column(Integer, ForeignKey(Ward.id))
     user_position = Column(Enum(Position))
 
     def __str__(self):
@@ -253,61 +252,64 @@ class ReceiptDetail(db.Model):
 
 if __name__ == '__main__':
     db.create_all()
-    c = Category(name="Thuốc giảm đâu, hạ sốt")
-    c1 = Category(name="Thuốc giải độc")
-    c2 = Category(name="Thuốc kháng sinh")
-    c3 = Category(name="Thuốc từ thiên")
-    c4 = Category(name="Thuốc dị ứng")
-    c5 = Category(name="Thuốc gây tê, mê")
-    c6 = Category(name="Thuốc điều trị ký sinh trùng")
-    c7 = Category(name="Thuốc tim mạch")
-    db.session.add(c)
-    db.session.add(c1)
-    db.session.add(c2)
-    db.session.add(c3)
-    db.session.add(c4)
-    db.session.add(c5)
-    db.session.add(c6)
-    db.session.add(c7)
-    medicines = [{
-        "name": "Panadol",
-        "description": "Thuốc giảm đau, hạ sốt",
-        "price": 20000,
-        "image": "images/Thuốc giảm đau, hạ sốt/panadol.jpg",
-        "category_id": 1
-    }, {
-        "name": "loratadin",
-        "description": "Thuốc chống dị ứng",
-        "price": 100000,
-        "image": "images/Thuốc chống dị ứng/loratadin.jpg",
-        "category_id": 4
-    }, {
-        "name": "deferoxamin",
-        "description": "Thuốc giải độc",
-        "price": 50000,
-        "image": "images/Thuốc giải độc/deferoxamin.jpg",
-        "category_id": 2
-    }, {
-        "name": "penicillin",
-        "description": "Thuốc kháng sinh",
-        "price": 50000,
-        "image": "images/Thuốc kháng sinh/penicillin.jpg",
-        "category_id": 3
-    }, {
-        "name": "aloe vera",
-        "description": "Thuốc từ thiên nhiên",
-        "price": 50000,
-        "image": "images/Thuốc từ thiên nhiên/aloe vera.jpg",
-        "category_id": 3
-    }]
-    for p in medicines:
-        med = Medicine(name=p['name'], price=p['price'], image=p['image'],
-                       description=p['description'], category_id=p['category_id'])
-        db.session.add(med)
-    city = City(name='TP.HCM')
-    db.session.add(city)
-    district = District(city_id=1, name='Quận 3')
-    db.session.add(district)
-    pro = Ward(district_id=1, name='Phường Võ Thị Sáu')
-    db.session.add(pro)
+    # c = Category(name="Thuốc giảm đâu, hạ sốt")
+    # c1 = Category(name="Thuốc giải độc")
+    # c2 = Category(name="Thuốc kháng sinh")
+    # c3 = Category(name="Thuốc từ thiên")
+    # c4 = Category(name="Thuốc dị ứng")
+    # c5 = Category(name="Thuốc gây tê, mê")
+    # c6 = Category(name="Thuốc điều trị ký sinh trùng")
+    # c7 = Category(name="Thuốc tim mạch")
+    # db.session.add(c)
+    # db.session.add(c1)
+    # db.session.add(c2)
+    # db.session.add(c3)
+    # db.session.add(c4)
+    # db.session.add(c5)
+    # db.session.add(c6)
+    # db.session.add(c7)
+    # medicines = [{
+    #     "name": "Panadol",
+    #     "description": "Thuốc giảm đau, hạ sốt",
+    #     "price": 20000,
+    #     "image": "images/Thuốc giảm đau, hạ sốt/panadol.jpg",
+    #     "category_id": 1
+    # }, {
+    #     "name": "loratadin",
+    #     "description": "Thuốc chống dị ứng",
+    #     "price": 100000,
+    #     "image": "images/Thuốc chống dị ứng/loratadin.jpg",
+    #     "category_id": 4
+    # }, {
+    #     "name": "deferoxamin",
+    #     "description": "Thuốc giải độc",
+    #     "price": 50000,
+    #     "image": "images/Thuốc giải độc/deferoxamin.jpg",
+    #     "category_id": 2
+    # }, {
+    #     "name": "penicillin",
+    #     "description": "Thuốc kháng sinh",
+    #     "price": 50000,
+    #     "image": "images/Thuốc kháng sinh/penicillin.jpg",
+    #     "category_id": 3
+    # }, {
+    #     "name": "aloe vera",
+    #     "description": "Thuốc từ thiên nhiên",
+    #     "price": 50000,
+    #     "image": "images/Thuốc từ thiên nhiên/aloe vera.jpg",
+    #     "category_id": 3
+    # }]
+    # for p in medicines:
+    #     med = Medicine(name=p['name'], price=p['price'], image=p['image'],
+    #                    description=p['description'], category_id=p['category_id'])
+    #     db.session.add(med)
+    # city = City(name='TP.HCM')
+    # db.session.add(city)
+    # district = District(city_id=1, name='Quận 3')
+    # db.session.add(district)
+    # pro = Ward(district_id=1, name='Phường Võ Thị Sáu')
+    # db.session.add(pro)
+    u = User(name="admin", username="admin2", password="d9b1d7db4cd6e70935368a1efb10e377", email="admin2@gmail.com",
+             date_of_birth="2001/1/11.", user_role=UserRole.ADMIN, user_position=Position.DOCTOR)
+    db.session.add(u)
     db.session.commit()
